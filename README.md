@@ -8,3 +8,9 @@ https://launchschool.medium.com/growing-your-own-web-framework-with-rack-part-1-
 bundle install
 rake start
 ```
+
+### tests
+
+```
+rake test
+```
