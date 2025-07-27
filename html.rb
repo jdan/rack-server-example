@@ -2,7 +2,10 @@ module HtmlBuilder
   def self.included(base)
     tag = ->(name) do
       base.define_method(name) do |**attrs, &block|
-        "<#{name}></#{name}>"
+        attr_string = attrs.map { |k, v| %{#{k}="#{v}"} }.join " "
+        attr_string = " #{attr_string}" unless attr_string.empty?
+
+        "<#{name}#{attr_string}></#{name}>"
       end
     end
 
