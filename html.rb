@@ -1,7 +1,11 @@
 module HtmlBuilder
-  def tag(name, *attrs, &block)
-    "<#{name}></#{name}>"
-  end
+  def self.included(base)
+    tag = ->(name) do
+      base.define_method(name) do |**attrs, &block|
+        "<#{name}></#{name}>"
+      end
+    end
 
-  def html = tag("html")
+    tag.(:html)
+  end
 end
