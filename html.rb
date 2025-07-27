@@ -1,4 +1,4 @@
-class HtmlBuilder
+module HtmlBuilder
   def html(**attrs, &block)
     context = HtmlContext.new
     context.build_tag(:html, **attrs, &block)

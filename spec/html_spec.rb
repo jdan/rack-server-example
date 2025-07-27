@@ -1,21 +1,23 @@
 require_relative "../html"
 
 describe HtmlBuilder do
+  include HtmlBuilder
+
   it "generates an html tag" do
-    expect(HtmlBuilder.new.html).to eq("<html></html>")
+    expect(html).to eq("<html></html>")
   end
 
   it "generates an html tag with attributes" do
-    expect(HtmlBuilder.new.html(lang: "en")).to eq(%{<html lang="en"></html>})
+    expect(html(lang: "en")).to eq(%{<html lang="en"></html>})
   end
 
   it "generates an html tag with attributes and children" do
-    expect(HtmlBuilder.new.html(lang: "en") { body }).to eq(%{<html lang="en"><body></body></html>})
+    expect(html(lang: "en") { body }).to eq(%{<html lang="en"><body></body></html>})
   end
 
   # known issue
   it "generates deeply nested html, but only trailing tags win" do
-    expect(HtmlBuilder.new.html {
+    expect(html {
       body {
         table {
           tr {
