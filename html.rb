@@ -1,33 +1,53 @@
-module HtmlBuilder
-  def self.included(base)
-    # I should probably parse the W3C spec or something
-    tags = [
-      # top level tags
-      :html, :head, :body,
+class HtmlBuilder
+  def html(**attrs, &block)
+    context = HtmlContext.new
+    context.build_tag(:html, **attrs, &block)
+    context.source
+  end
 
-      # head tags
-      :title, :meta,
+  class HtmlContext
+    attr_reader :source
 
-      # layout tags
-      :div, :span,
+    def initialize
+      @source = ""
+    end
 
-      # prose tags
-      :h1, :h2, :h3, :h4, :h5, :h6,
-      :p, :a, :strong, :em,
+    def build_tag(name, **attrs, &block)
+      @source << "<#{name}"
 
-      # table tags
-      :table, :thead, :tbody, :th, :tr, :td,
-    ]
-
-    tags.each do |tag|
-      base.define_method(tag) do |**attrs, &block|
-        attr_string = attrs.map { |k, v| %{#{k}="#{v}"} }.join " "
-        attr_string = " #{attr_string}" unless attr_string.empty?
-
-        children_html = block ? block.() : ""
-
-        "<#{tag}#{attr_string}>#{children_html}</#{tag}>"
+      if attrs.empty?
+        @source << ">"
+      else
+        @source << " "
+        @source << attrs.map { |k, v| %{#{k}="#{v}"} }.join(" ")
+        @source << ">"
       end
+
+      if block
+        result = instance_eval(&block)
+
+        # Text nodes are represented as
+        #
+        #   p { "Hello, world!" }
+        #
+        # So we inspect the type of the block evaluation,
+        # and append to @source if we need to.
+        if result.is_a? String
+          @source << result
+        end
+      end
+
+      @source << "</#{name}>"
+
+      :ok
+    end
+
+    def method_missing(name, **attrs, &block)
+      build_tag(name, **attrs, &block)
+    end
+
+    def respond_to_missing?(name, include_private = false)
+      true
     end
   end
 end
