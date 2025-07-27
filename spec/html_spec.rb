@@ -11,4 +11,8 @@ describe HtmlBuilder do
   it "generates an html tag with attributes" do
     expect(html(lang: "en")).to eq(%{<html lang="en"></html>})
   end
+
+  it "generates an html tag with attributes and children" do
+    expect(html(lang: "en") { body }).to eq(%{<html lang="en"><body></body></html>})
+  end
 end

@@ -5,10 +5,13 @@ module HtmlBuilder
         attr_string = attrs.map { |k, v| %{#{k}="#{v}"} }.join " "
         attr_string = " #{attr_string}" unless attr_string.empty?
 
-        "<#{name}#{attr_string}></#{name}>"
+        children_html = block ? block.() : ""
+
+        "<#{name}#{attr_string}>#{children_html}</#{name}>"
       end
     end
 
     tag.(:html)
+    tag.(:body)
   end
 end
