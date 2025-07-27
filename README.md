@@ -6,5 +6,5 @@ https://launchschool.medium.com/growing-your-own-web-framework-with-rack-part-1-
 
 ```
 bundle install
-bundle exec rackup config.ru -p 9595
+rake start
 ```
