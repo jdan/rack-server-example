@@ -4,15 +4,15 @@ class HelloWorld
   def call(env)
     case env['REQUEST_PATH']
     when '/'
-      [200, {'content-type' => 'text/plain'}, ['Hello World!']]
+      [200, {'content-type' => 'text/html'}, ["<html><body><h2>Hello World!</h2></body></html>"]]
     when '/advice'
       piece_of_advice = Advice.new.generate
-      [200, {'content-type' => 'text/plain'}, [piece_of_advice]]
+      [200, {'content-type' => 'text/html'}, ["<html><body><b><em>#{piece_of_advice}</em></b></body></html>"]]
     else
       [
         404,
-        {'content-type' => 'text/plain', "content-length" => "13"},
-        ["404 Not Found"]
+        {'content-type' => 'text/html', "content-length" => "48"},
+        ["<html><body><h4>404 Not Found</h4></body></html>"]
       ]
     end
   end
