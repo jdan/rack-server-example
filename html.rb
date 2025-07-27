@@ -1,11 +1,22 @@
 module HtmlBuilder
   def self.included(base)
+    # I should probably parse the W3C spec or something
     tags = [
       # top level tags
       :html, :head, :body,
 
       # head tags
       :title, :meta,
+
+      # layout tags
+      :div, :span,
+
+      # prose tags
+      :h1, :h2, :h3, :h4, :h5, :h6,
+      :p, :a, :strong, :em,
+
+      # table tags
+      :table, :thead, :tbody, :th, :tr, :td,
     ]
 
     tags.each do |tag|
